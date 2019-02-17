@@ -1,0 +1,38 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <script>
+        $("#cancel").click(function() {
+            $("#details").css("display", "none");
+        });
+
+        $("#editform").submit(function(e){
+            e.preventDefault();
+            $("#editerror").html("");
+            $.ajax({
+                url: $(this).attr("action"),
+                method: "post",
+                data: $(this).serialize(),
+                success: function(data) {
+                    $("#details").css("display", "none");
+                    $("#products").html(data);
+                },
+                error: function (data) {
+                    $("#editerror").html(data.responseText);
+                }
+            });
+        });
+    </script>
+</head>
+<body>
+    <h3>Edit product</h3>
+    <span id = "editerror" class = "error"></span><br/>
+
+    <form action = "/products/{{product.id}}/change" method = "post" id = "editform">
+        {% csrf_token %}
+        {{ prod.as_p }}
+        <input type = "submit" value = "Edit product info" class = "btn btn-info">
+        <button type = "button" class = "btn btn-secondary" id = "cancel">Cancel</button>
+    </form>
+</body>
+</html>

@@ -1,0 +1,126 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <script>
+        $(".edit").click(function(e) {
+            e.preventDefault();
+            $.ajax({
+                url: "/products/" + this.id,
+                method: "get",
+                success: function(data) {
+                    $("#details").css("display", "inline-block");
+                    $("#details").html(data);
+                }
+            });
+        });
+
+        $(".delete").click(function(e) {
+            e.preventDefault();
+            $.ajax({
+                url: "/products/" + this.id + "/change",
+                method: "get",
+                success: function(data) {
+                    $("#products").html(data);
+                }
+            });
+        });
+
+        $("#brand").click(function() {
+            $.ajax({
+                url: "/sortbrand",
+                method: "get",
+                success: function(data) {
+                    $("#products").html(data);
+                }
+            });
+            return false;
+        });
+
+        $("#name").click(function() {
+            $.ajax({
+                url: "/sortname",
+                method: "get",
+                success: function(data) {
+                    $("#products").html(data);
+                }
+            });
+            return false;
+        });
+
+        $("#price").click(function() {
+            $.ajax({
+                url: "/sortprice",
+                method: "get",
+                success: function(data) {
+                    $("#products").html(data);
+                }
+            });
+            return false;
+        });
+
+        $("#created").click(function() {
+            $.ajax({
+                url: "/sortcreated",
+                method: "get",
+                success: function(data) {
+                    $("#products").html(data);
+                }
+            });
+            return false;
+        });
+
+        $("#updated").click(function() {
+            $.ajax({
+                url: "/sortupdated",
+                method: "get",
+                success: function(data) {
+                    $("#products").html(data);
+                }
+            });
+            return false;
+        });
+    </script>
+    <style>
+        table .btn {
+            margin-left: 20px;
+        }
+        th .btn {
+            margin-left: 0px;
+        }
+        .top {
+            text-align: center;
+        }
+    </style>
+</head>
+<body>
+    <table class = "table table-primary table-bordered table-striped table-hover">
+        <thead>
+            <tr>
+                <th><button class = "btn btn-link" id = "brand">Manufacturer/Brand</button></th>
+                <th><button class = "btn btn-link" id = "name">Product Name</button></th>
+                <th><button class = "btn btn-link" id = "price">Price</button></th>
+                <th class = "top">Description</th>
+                <th><button class = "btn btn-link" id = "created">Created At</button></th>
+                <th><button class = "btn btn-link" id = "updated">Updated At</button></th>
+                <th class = "top">Actions</th>
+            </tr>
+        </thead>
+        <tbody>
+            {% for product in products %}
+            <tr>
+                <td>{{product.brand}}</td>
+                <td>{{product.name}}</td>
+                <td>{{product.price}} bits</td>
+                <td style = "width: 25%">{{product.description}}</td>
+                <td style = "width: 10%">{{product.created_at}}</td>
+                <td style = "width: 10%">{{product.updated_at}}</td>
+                <td>
+                    <button class = "btn btn-primary edit" id = "{{product.id}}">Edit</button>
+                    <button class = "btn btn-secondary delete" id = "{{product.id}}">Delete</button>
+                </td>
+            </tr>
+            {% endfor %}
+        </tbody>
+    </table>
+</body>
+</html>
